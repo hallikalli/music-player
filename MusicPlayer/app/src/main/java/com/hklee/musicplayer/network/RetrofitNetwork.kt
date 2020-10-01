@@ -19,16 +19,12 @@ import javax.inject.Inject
 
 
 class MainRepo @Inject constructor(private val apiService: ApiService) {
-    fun getSong(): Flowable<Music> = apiService.getSong()
-    fun getSongPojo(): Call<Music> = apiService.getSongPojo()
+    fun getSong(): Flowable<Song> = apiService.getSong()
 }
 
 interface ApiService  {
     @GET("/2020-flo/song.json")
-    fun getSong() : Flowable<Music>
-    //todo: 지우기
-    @GET("/2020-flo/song.json")
-    fun getSongPojo() : Call<Music>
+    fun getSong() : Flowable<Song>
 }
 
 @InstallIn(ActivityRetainedComponent::class)

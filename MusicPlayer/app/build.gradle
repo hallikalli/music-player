@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     def lifecycle_version = "2.2.0"
     def arch_version = "2.1.0"
     def hilt_version = "2.28.3-alpha"
@@ -86,5 +87,14 @@ dependencies {
     //RX
     implementation "io.reactivex.rxjava3:rxjava:$rx_java_version"
     implementation "io.reactivex.rxjava3:rxandroid:$rx_android_version"
+
+    //exo player
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.12.0'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.12.0'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.12.0'
+
+    //Lauzy/LyricView
+    implementation 'com.github.Lauzy:LyricView:1.0.4'
+    implementation 'me.wcy:lrcview:2.2'
 
 }
