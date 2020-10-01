@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_host_fragment"
+    app:startDestination="@id/musicPlayerFragment">
+    <fragment
+        android:id="@+id/musicPlayerFragment"
+        android:name="com.hklee.musicplayer.ui.player.musicplayer.MusicPlayerFragment"
+        android:label="MusicPlayerFragment">
+        <action
+            android:id="@+id/toLyricPlayerFragment"
+            app:destination="@id/lyricViewFragment"
+            app:enterAnim="@anim/fragment_close_enter" />
+    </fragment>
+    <fragment
+        android:id="@+id/lyricViewFragment"
+        android:name="com.hklee.musicplayer.ui.player.lyricplayer.LyricPlayerFragment"
+        android:label="fragment_lyric_view"
+        tools:layout="@layout/fragment_lyric_player" >
+    </fragment>
+
+
+</navigation>

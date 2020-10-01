@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.hklee.musicplayer.ui.viewmodel.MainViewModel" />
+
+        <variable
+            name="mc"
+            type="com.hklee.musicplayer.ui.player.PlayerController" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/playerBackground"
+        tools:context=".ui.player.lyricplayer.LyricPlayerFragment">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{vm.playerStatus.singer}"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:text="singer" />
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{vm.playerStatus.title}"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.043"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="title" />
+
+        <SeekBar
+            android:id="@+id/sbLyricPlayer"
+            style="@style/FloSeekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:max="@{mc.nowPlaying.second}"
+            android:progress="@{mc.nowPlaying.first}"
+            android:scaleY="2"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/playerBar"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@null"
+                android:onClick="@{() -> mc.isPlaying()? mc.pause(false):mc.start()}"
+                android:scaleType="fitXY"
+                app:play="@{mc.isPlaying}"
+                app:srcCompat="@drawable/ic_play" />
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@null"
+                android:onClick="@{() ->mc.stop()}"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_stop" />
+        </LinearLayout>
+
+        <com.lauzy.freedom.library.LrcView
+            android:id="@+id/lvLyricPlayer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            app:currentIndicateLrcColor="@color/colorAccent"
+            app:indicatorTextColor="@android:color/holo_orange_dark"
+            app:isLrcCurrentTextBold="true"
+            app:layout_constraintBottom_toTopOf="@+id/sbLyricPlayer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:lrcCurrentTextColor="@android:color/white"
+            app:lrcLineSpaceSize="5sp"
+            app:lrcNormalTextColor="@android:color/darker_gray"
+            app:lrcTextSize="14sp"
+            app:playIcon="@drawable/ic_stop" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

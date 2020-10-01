@@ -1,4 +1,4 @@
-package com.hklee.musicplayer.ui.activities
+package com.hklee.musicplayer.ui.player
 
 import android.media.AudioAttributes
 import android.media.MediaPlayer
@@ -7,29 +7,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.lauzy.freedom.library.Lrc
 import com.lauzy.freedom.library.LrcView
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
-/*
 
-@InstallIn(ApplicationComponent::class)
-@Module
-object MediaPlayerControllerModule {
-    @Singleton
-    @Provides
-    fun provideMediaPlayerController() = MediaControllerImpl()
-}
-*/
+
 enum class MUSIC_STATUS {
     PLAYING, STOP, PAUSE
 }
 
-interface MediaController : SeekBar.OnSeekBarChangeListener, MediaPlayer.OnPreparedListener,
+interface PlayerController : SeekBar.OnSeekBarChangeListener, MediaPlayer.OnPreparedListener,
     MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, LrcView.OnPlayIndicatorLineListener {
-    val nowPlaying: LiveData<Pair<Int, Int>>
     val isPlaying: LiveData<Boolean>
+    val nowPlaying: LiveData<Pair<Int, Int>>
     val musicStatus: LiveData<MUSIC_STATUS>
     val lyrics: List<Lrc>
     fun setNewTrack(url: String)
@@ -40,14 +37,14 @@ interface MediaController : SeekBar.OnSeekBarChangeListener, MediaPlayer.OnPrepa
 }
 
 
-class MediaControllerImpl : MediaController {
+class PlayerControllerImpl : PlayerController {
 
     //todo: lazy 추가
     private var mediaPlayer = MediaPlayer().apply {
         setVolume(1f, 1f)
-        setOnPreparedListener(this@MediaControllerImpl)
-        setOnCompletionListener(this@MediaControllerImpl)
-        setOnErrorListener(this@MediaControllerImpl)
+        setOnPreparedListener(this@PlayerControllerImpl)
+        setOnCompletionListener(this@PlayerControllerImpl)
+        setOnErrorListener(this@PlayerControllerImpl)
         val attr = AudioAttributes.Builder().apply {
             setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
             setUsage(AudioAttributes.USAGE_MEDIA)
@@ -80,7 +77,7 @@ class MediaControllerImpl : MediaController {
     override fun setNewTrack(url: String) {
         if (mediaPlayer.isPlaying) {
             stop()
-            mediaPlayer.release()
+            mediaPlayer.release()//todo:??
         }
         songUrl = url;
     }
@@ -173,7 +170,6 @@ class MediaControllerImpl : MediaController {
     }
 
     override fun onPlay(time: Long, content: String?) {
-        println("on Play ")
         mediaPlayer.seekTo(time.toInt())
     }
 

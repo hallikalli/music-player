@@ -1,4 +1,4 @@
-package com.hklee.musicplayer.network
+package com.hklee.musicplayer.data
 
 data class Song(
     val singer: String,
