@@ -7,4 +7,9 @@
     <color name="darkGray">#343333</color>
     <color name="black_overlay">#66000000</color>
     <color name="playerBar">#161616</color>
+    <color name="floColor">#395AFF</color>
+    <color name="lyricDefault">#666666</color>
+    <color name="lyricHighlight">#ffffff</color>
+    <color name="playTime">#4b4b4b</color>
+
 </resources>

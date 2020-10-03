@@ -13,21 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.ActionBar.Transparent">
-     <!--   <service
-            android:name=".ui.activities.MediaControllerImpl"
-            android:enabled="true"
-            android:exported="true"></service>
--->
         <activity
-            android:name="com.hklee.musicplayer.ui.splash.SplashActivity"
+            android:name=".ui.splash.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainActivity" />
+        <activity android:name=".ui.MainActivity"
+            android:theme="@style/NoActionBarTheme"/>
     </application>
 
 </manifest>

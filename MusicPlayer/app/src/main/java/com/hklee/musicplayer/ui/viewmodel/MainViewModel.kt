@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class MainViewModel @ViewModelInject constructor(mainRepo: MainRepo) : BaseViewModel() {
 
     private val _playerStatus = MutableLiveData<Song>()
-    val playerStatus: LiveData<Song> = _playerStatus
+    val currentSong: LiveData<Song> = _playerStatus
 
     private val _playProgress = MutableLiveData<Pair<Long, Long>>()
     val playProgress: LiveData<Pair<Long, Long>> = _playProgress

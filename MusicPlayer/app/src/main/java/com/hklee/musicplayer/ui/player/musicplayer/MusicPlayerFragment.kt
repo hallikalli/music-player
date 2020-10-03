@@ -1,12 +1,14 @@
 package com.hklee.musicplayer.ui.player.musicplayer
 
-import android.view.View.OnTouchListener
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hklee.musicplayer.R
 import com.hklee.musicplayer.base.BaseFragment
 import com.hklee.musicplayer.databinding.FragmentMusicPlayerBinding
+import com.hklee.musicplayer.ui.player.LyricAdapter
 import com.hklee.musicplayer.ui.player.PlayerController
 import com.hklee.musicplayer.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,24 +28,45 @@ class MusicPlayerFragment :
         with(binding) {
             vm = viewModel
             mc = playerController
-        }.also {
-            println("MusicPlayerFragment : 완료 + ${playerController.hashCode()}" + "${viewModel.hashCode()}")
         }
 
-        lvMusicPlayer.setLrcData(playerController.lyrics)
+        //ActionBar Setting
+        activity?.let { it as AppCompatActivity }?.supportActionBar?.apply {
+            this.title = ""
+            this.subtitle = ""
+        }
+
+//        lvMusicPlayer.setLrcData(playerController.lyrics)
         sbMusicPlayer.setOnSeekBarChangeListener(playerController)
+//        rvLyricMini.setOnTouchListener { view, motionEvent -> false }
 
-        val playingObserver = Observer<Pair<Int, Int>> { pair ->
-            lvMusicPlayer.updateTime(pair.first.toLong());
-        }
-        playerController.nowPlaying.observe(this, playingObserver)
-
-
-        lvMusicPlayer.setOnTouchListener(OnTouchListener { _, _ -> false })
-        lvMusicPlayer.setOnClickListener {
+        vFilmOfLycPlayerMini.setOnClickListener {
             val action =
                 MusicPlayerFragmentDirections.toLyricPlayerFragment()
             findNavController().navigate(action)
         }
+//        rvLyricMini.isNestedScrollingEnabled=false
+
+        setAdapter()
+    }
+
+
+    fun setAdapter(){
+
+        var adapter = LyricAdapter(R.style.LyricViewMini)
+        rvLyricMini.adapter = adapter
+
+        adapter.setData(playerController.lyrics2)
+        adapter.notifyDataSetChanged()
+        rvLyricMini.layoutManager = LinearLayoutManager(activity);
+
+
+        val playingObserver = Observer<Pair<Int, Int>> { pair ->
+            (rvLyricMini.adapter as LyricAdapter).updateTime(pair.first.toLong());
+            rvLyricMini.scrollToPosition(
+                (rvLyricMini.adapter as LyricAdapter).currentLine+1)
+        }
+        playerController.nowPlaying.observe(this, playingObserver)
+
     }
 }

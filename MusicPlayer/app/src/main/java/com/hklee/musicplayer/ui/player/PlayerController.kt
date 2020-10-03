@@ -18,17 +18,19 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
-
 enum class MUSIC_STATUS {
     PLAYING, STOP, PAUSE
 }
 
 interface PlayerController : SeekBar.OnSeekBarChangeListener, MediaPlayer.OnPreparedListener,
-    MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, LrcView.OnPlayIndicatorLineListener {
-    val isPlaying: LiveData<Boolean>
+    MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener,
+    LrcView.OnPlayIndicatorLineListener,
+    OnItemClickListener{
+    val isPlaying: LiveData<Boolean> // todo: musicStatus와 통합
     val nowPlaying: LiveData<Pair<Int, Int>>
     val musicStatus: LiveData<MUSIC_STATUS>
     val lyrics: List<Lrc>
+    val lyrics2: List<Lyc>
     fun setNewTrack(url: String)
     fun setLyrics(lyrics: String)
     fun start()
@@ -36,7 +38,7 @@ interface PlayerController : SeekBar.OnSeekBarChangeListener, MediaPlayer.OnPrep
     fun stop()
 }
 
-
+//todo : application 종료시 mediaplayer.release
 class PlayerControllerImpl : PlayerController {
 
     //todo: lazy 추가
@@ -59,6 +61,8 @@ class PlayerControllerImpl : PlayerController {
 
     private val _lyrics = mutableListOf<Lrc>()
     override val lyrics = _lyrics
+    private val _lyrics2 = mutableListOf<Lyc>()
+    override val lyrics2 = _lyrics2
 
     private var status = MUSIC_STATUS.STOP;
 
@@ -75,9 +79,9 @@ class PlayerControllerImpl : PlayerController {
 
     var songUrl: String? = null
     override fun setNewTrack(url: String) {
-        if (mediaPlayer.isPlaying) {
+        if (MUSIC_STATUS.STOP != _musicStatus) {
             stop()
-            mediaPlayer.release()//todo:??
+            mediaPlayer.reset()
         }
         songUrl = url;
     }
@@ -88,11 +92,12 @@ class PlayerControllerImpl : PlayerController {
         for (line in strs) {
             var timeStr = line.substring(line.indexOf('[') + 1, line.indexOf(']'))
             var lyric = line.substring(line.indexOf(']') + 1)
-            println(timeStr+". " +lyric)
+            println(timeStr + ". " + lyric)
             _lyrics.add(Lrc().apply {
                 time = parseTime(timeStr)
                 text = lyric
             })
+            _lyrics2.add(Lyc(parseTime(timeStr),lyric))
         }
     }
 
@@ -107,9 +112,9 @@ class PlayerControllerImpl : PlayerController {
 
     override fun start() {
         if (songUrl == null) return
-        if (MUSIC_STATUS.PAUSE == musicStatus.value)
+        if (MUSIC_STATUS.PAUSE == musicStatus.value) {
             mediaPlayer.start()
-        else {
+        }else {
             mediaPlayer.reset()
             mediaPlayer.setDataSource(songUrl)
             mediaPlayer.prepareAsync()
@@ -122,7 +127,7 @@ class PlayerControllerImpl : PlayerController {
     //todo tracktouch 시 버튼이 바뀌면 안
     override fun pause(trackTouch: Boolean) {
         mediaPlayer.pause()
-        if (trackTouch) _isPlaying.postValue(false);
+        _isPlaying.postValue(trackTouch);
         _musicStatus.postValue(MUSIC_STATUS.PAUSE)
     }
 
@@ -170,6 +175,10 @@ class PlayerControllerImpl : PlayerController {
     }
 
     override fun onPlay(time: Long, content: String?) {
+        mediaPlayer.seekTo(time.toInt())
+    }
+
+    override fun onSeekTo(time: Long) {
         mediaPlayer.seekTo(time.toInt())
     }
 

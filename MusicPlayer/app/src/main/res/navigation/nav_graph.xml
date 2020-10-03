@@ -11,13 +11,25 @@
         <action
             android:id="@+id/toLyricPlayerFragment"
             app:destination="@id/lyricViewFragment"
-            app:enterAnim="@anim/fragment_close_enter" />
+            app:enterAnim="@anim/slide_up"
+            app:popExitAnim="@anim/slide_down"
+            />
     </fragment>
     <fragment
         android:id="@+id/lyricViewFragment"
         android:name="com.hklee.musicplayer.ui.player.lyricplayer.LyricPlayerFragment"
         android:label="fragment_lyric_view"
         tools:layout="@layout/fragment_lyric_player" >
+
+     <!--   <action
+            android:id="@+id/action_lyricViewFragment_to_musicPlayerFragment"
+            app:destination="@id/musicPlayerFragment" />-->
+      <!--  <action android:id="@+id/toMusicPlayerFragment"
+            app:destination="@id/musicPlayerFragment"
+            app:exitAnim="@anim/slide_down"
+            app:popExitAnim="@anim/slide_down"
+            app:popUpTo="@+id/musicPlayerFragment"
+            app:popUpToInclusive="true"/>-->
     </fragment>
 
 

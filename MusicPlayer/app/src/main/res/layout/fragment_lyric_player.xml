@@ -20,101 +20,144 @@
         android:background="@color/playerBackground"
         tools:context=".ui.player.lyricplayer.LyricPlayerFragment">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@{vm.playerStatus.singer}"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:text="singer" />
 
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{vm.playerStatus.title}"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.043"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="title" />
-
-        <SeekBar
-            android:id="@+id/sbLyricPlayer"
-            style="@style/FloSeekBar"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLyric"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:max="@{mc.nowPlaying.second}"
-            android:progress="@{mc.nowPlaying.first}"
-            android:scaleY="2"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
+            android:overScrollMode="never"
+
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+            tools:itemCount="30"
+            tools:listitem="@layout/item_lyric_line" />
+
+        <com.github.zagum.switchicon.SwitchIconView
+            android:id="@+id/btnLyricClickable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="@+id/rvLyric"
+            app:layout_constraintTop_toTopOf="@+id/rvLyric"
+            app:si_animation_duration="500"
+            app:si_disabled_alpha=".3"
+            app:si_disabled_color="#b7b7b7"
+            app:si_enabled="false"
+            app:si_no_dash="true"
+            app:si_tint_color="@color/floColor"
+            app:srcCompat="@drawable/ic_indent_increase" />
+
+
 
 
         <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="0dp"
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/playerBar"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent">
 
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@null"
-                android:onClick="@{() -> mc.isPlaying()? mc.pause(false):mc.start()}"
-                android:scaleType="fitXY"
-                app:play="@{mc.isPlaying}"
-                app:srcCompat="@drawable/ic_play" />
+            <SeekBar
+                android:id="@+id/sbLyricPlayer"
+                style="@style/FloSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="@{mc.nowPlaying.second}"
+                android:progress="@{mc.nowPlaying.first}"
+                android:scaleY="2"
+                tools:progress="30" />
 
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@null"
-                android:onClick="@{() ->mc.stop()}"
-                android:scaleType="fitXY"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_stop" />
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:onClick="@{() -> mc.isPlaying()? mc.pause(false):mc.start()}"
+                    android:scaleType="fitXY"
+                    app:play="@{mc.isPlaying}"
+                    app:srcCompat="@drawable/ic_play" />
+
+                <ImageButton
+                    android:id="@+id/imageButton2"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:onClick="@{() ->mc.stop()}"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_stop" />
+            </LinearLayout>
         </LinearLayout>
 
-        <com.lauzy.freedom.library.LrcView
-            android:id="@+id/lvLyricPlayer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            app:currentIndicateLrcColor="@color/colorAccent"
-            app:indicatorTextColor="@android:color/holo_orange_dark"
-            app:isLrcCurrentTextBold="true"
-            app:layout_constraintBottom_toTopOf="@+id/sbLyricPlayer"
+        <ImageButton
+            android:id="@+id/btnExitLyricPlayer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_clear" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:lrcCurrentTextColor="@android:color/white"
-            app:lrcLineSpaceSize="5sp"
-            app:lrcNormalTextColor="@android:color/darker_gray"
-            app:lrcTextSize="14sp"
-            app:playIcon="@drawable/ic_stop" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{vm.currentSong.title}"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="title"/>
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{vm.currentSong.album}"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                tools:text="singer"/>
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{vm.currentSong.singer}"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                tools:text="singer"/>
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
