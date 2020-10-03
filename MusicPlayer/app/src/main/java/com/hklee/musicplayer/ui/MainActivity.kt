@@ -31,7 +31,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
 //        supportActionBar?.title="asdf"
         val viewModelObserver = Observer<Song> { song ->
             song?.file?.let {
-                playerController.setNewTrack(it)
+                playerController.setNewSong(it)
             }
             song?.let {
                 playerController.setLyrics(it.lyrics)

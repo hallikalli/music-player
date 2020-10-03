@@ -56,7 +56,7 @@ class MusicPlayerFragment :
         var adapter = LyricAdapter(R.style.LyricViewMini)
         rvLyricMini.adapter = adapter
 
-        adapter.setData(playerController.lyrics2)
+        adapter.setData(playerController.lyrics)
         adapter.notifyDataSetChanged()
         rvLyricMini.layoutManager = LinearLayoutManager(activity);
 

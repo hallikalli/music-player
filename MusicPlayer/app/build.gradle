@@ -97,14 +97,14 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.12.0'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.12.0'
 
-    //Lauzy/LyricView
-    implementation 'com.github.Lauzy:LyricView:1.0.4'
-    implementation 'me.wcy:lrcview:2.2'
 
     // Navigation component
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     implementation 'com.github.zagum:Android-SwitchIcon:1.4.0'
+
+    //Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
 }

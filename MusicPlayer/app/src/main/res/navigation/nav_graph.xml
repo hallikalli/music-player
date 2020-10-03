@@ -12,6 +12,7 @@
             android:id="@+id/toLyricPlayerFragment"
             app:destination="@id/lyricViewFragment"
             app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/not_move"
             app:popExitAnim="@anim/slide_down"
             />
     </fragment>

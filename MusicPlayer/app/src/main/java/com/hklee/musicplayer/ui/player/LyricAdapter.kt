@@ -82,7 +82,6 @@ class LyricAdapter(@StyleRes val lyricStyle: Int = R.style.LyricViewMini) :
 
         val originalPos = IntArray(2)
         holder.textView.getLocationInWindow(originalPos)
-        println("y : " + originalPos[0] + originalPos[1])
     }
 
 

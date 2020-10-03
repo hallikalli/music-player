@@ -23,7 +23,6 @@ import com.hklee.musicplayer.ui.player.PlayerController
 import com.hklee.musicplayer.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_lyric_player.*
-import kotlinx.android.synthetic.main.fragment_music_player.*
 import javax.inject.Inject
 
 
@@ -73,7 +72,7 @@ class LyricPlayerFragment :
         adapter   = LyricAdapter(R.style.LyricViewFull)
         rvLyric.adapter = adapter
         adapter.textAligment = TextView.TEXT_ALIGNMENT_TEXT_START
-        adapter.setData(playerController.lyrics2)
+        adapter.setData(playerController.lyrics)
         adapter.notifyDataSetChanged()
         rvLyric.layoutManager = LinearLayoutManager(activity);
         adapter.setOnItemClickListener(playerController)

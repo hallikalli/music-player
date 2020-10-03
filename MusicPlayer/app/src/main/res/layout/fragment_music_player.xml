@@ -34,19 +34,6 @@
             tools:text="singer" />
 
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="270dp"
-            android:layout_height="270dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            app:imageUrl="@{vm.currentSong.image}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
@@ -136,12 +123,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvLyricMini"
             android:layout_width="0dp"
-            android:layout_height="55dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="24dp"
             android:padding="0dp"
-            app:layout_constraintEnd_toEndOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            tools:itemCount="2"
+            app:layout_constraintEnd_toEndOf="@+id/cardView"
+            app:layout_constraintStart_toStartOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            tools:itemCount="5"
             tools:listitem="@layout/item_lyric_line" />
 
         <TextView
@@ -165,7 +153,26 @@
             app:layout_constraintBottom_toBottomOf="@+id/rvLyricMini"
             app:layout_constraintEnd_toEndOf="@+id/rvLyricMini"
             app:layout_constraintStart_toStartOf="@+id/rvLyricMini"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" >
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                app:imageUrl="@{vm.currentSong.image}" />
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
