@@ -1,6 +1,7 @@
-package com.hklee.musicplayer.ui.player
+package com.hklee.musicplayer.ui.adapter
 
 import android.graphics.Typeface
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,21 +10,36 @@ import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.hklee.musicplayer.R
-import kotlinx.android.synthetic.main.fragment_lyric_player.*
 
-interface OnItemClickListener {
-    fun onSeekTo(time: Long)
-}
+
 
 data class Lyc(val time: Long, val line: String)
 
-class LyricAdapter(@StyleRes val lyricStyle: Int = R.style.LyricViewMini) :
+class LyricAdapter(
+    private val dataSet: List<Lyc>,
+    @StyleRes val lyricStyle: Int = R.style.LyricViewMini
+) :
     RecyclerView.Adapter<LyricAdapter.LyricHolder>() {
+    // 가사 구간 추적 기능 on일때 해당 구간으로 변
+    interface OnItemClickListener {
+        fun onSeekTo(time: Long)
+    }
+
+    // 가사 구간 추적 기능 off일때 구간터치시 현제 페이지 종료
+    interface OnCloseListener {
+        fun onFinish()
+    }
+
     var centerPos: Int = -1
-    private var mListener: OnItemClickListener? = null
-    var dataSet: List<Lyc> = listOf()
     var isItemClickable = false
-    var textAligment = TextView.TEXT_ALIGNMENT_CENTER
+//    private var dataSet: List<Lyc> = listOf()
+
+    private var itemClickListener: OnItemClickListener? = null
+    private var closeListener: OnCloseListener? = null
+    private var textAligment =
+        if (lyricStyle == R.style.LyricViewMini) TextView.TEXT_ALIGNMENT_CENTER else TextView.TEXT_ALIGNMENT_TEXT_START
+    private var textBigger =
+        lyricStyle != R.style.LyricViewMini
 
     var recyclerView: RecyclerView? = null
 
@@ -36,16 +52,18 @@ class LyricAdapter(@StyleRes val lyricStyle: Int = R.style.LyricViewMini) :
     inner class LyricHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener {
-                if (!isItemClickable) return@setOnClickListener
-                val pos = adapterPosition
-                if (pos != RecyclerView.NO_POSITION) {
-                    mListener?.apply { onSeekTo(dataSet[pos].time) }
+                if (!isItemClickable) {
+                    closeListener?.apply { onFinish() }
+                } else {
+                    val pos = adapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        itemClickListener?.apply { onSeekTo(dataSet[pos].time) }
+                    }
                 }
             }
 
         }
 
-        //todo 수정하기
         val textView = itemView.findViewById<TextView>(R.id.tvLyric).apply {
             if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
                 setTextAppearance(this.context, lyricStyle);
@@ -53,11 +71,17 @@ class LyricAdapter(@StyleRes val lyricStyle: Int = R.style.LyricViewMini) :
                 setTextAppearance(lyricStyle)
             }
             textAlignment = textAligment
+            if (textBigger) setPadding(0, 16, 0, 16)
+
         }!!
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
-        this.mListener = listener
+        this.itemClickListener = listener
+    }
+
+    fun setOnCloseListener(listener: OnCloseListener) {
+        this.closeListener = listener
     }
 
     // Create new views (invoked by the layout manager)
@@ -77,17 +101,11 @@ class LyricAdapter(@StyleRes val lyricStyle: Int = R.style.LyricViewMini) :
             else
                 setTextColor(ContextCompat.getColor(context, R.color.lyricDefault))
 
-            setTypeface(this.typeface, if (isCurrent) Typeface.BOLD else Typeface.NORMAL);
+            setTypeface(null, if (isCurrent) Typeface.BOLD else Typeface.NORMAL);
         }
 
         val originalPos = IntArray(2)
         holder.textView.getLocationInWindow(originalPos)
-    }
-
-
-    fun setData(dataSet: List<Lyc>) {
-        this.dataSet = dataSet
-
     }
 
 
@@ -96,34 +114,52 @@ class LyricAdapter(@StyleRes val lyricStyle: Int = R.style.LyricViewMini) :
     var prevLine = currentLine
 
     fun updateTime(mills: Long) {
+        //첫 소절
         if (currentLine == -1) {
             if (dataSet[0].time <= mills) currentLine = 0
         }
-        if (currentLine >= 0) {
-            if (dataSet[currentLine].time < mills) {
+
+        if (currentLine >= 0) { //시간순대로 가사 추적
+            if (dataSet[currentLine].time <= mills + 500) {
                 for (linePos in currentLine + 1 until dataSet.size) {
-                    if (dataSet[linePos].time <= mills) {
+                    if (dataSet[linePos].time <= mills + 500) {
                         if (linePos == 0 && dataSet[0].time < mills) currentLine = -1
                         else currentLine = linePos
                     } else break
                 }
-            } else {
-                for (linePos in dataSet.indices) {
-                    if (dataSet[linePos].time <= mills) currentLine = linePos
-                    else break
+
+            } else {  //시크바를 움직여 이전 시간대로 갔을력때 가사 추적
+                if (dataSet[0].time > mills) {
+                    currentLine = -1
+                } else {
+                    for (linePos in dataSet.indices) {
+                        if (dataSet[linePos].time <= mills) {
+                            currentLine = linePos
+                        } else break
+                    }
                 }
             }
         }
 
         if (prevLine != currentLine) {
-            if (prevLine >= 0) notifyItemChanged(prevLine)
             if (currentLine >= 0) notifyItemChanged(currentLine)
-            prevLine = currentLine
-
+            if (prevLine >= 0) notifyItemChanged(prevLine)
+            //중앙고정이 설정되어있으면 자동 스크롤
             if (centerPos != -1 && centerPos < currentLine + 1) {
-                println("$centerPos  $currentLine ")
-                recyclerView?.scrollToPosition(currentLine + 1 - centerPos)
+
+
+                Handler().postDelayed(
+                    Runnable {
+                        recyclerView!!.smoothScrollToPosition(currentLine + 1 - centerPos)
+
+                    },
+                    200
+                )
+//                recyclerView?.scrollToPosition(centerPos)
+//                recyclerView?.invalidate()
+
             }
+            prevLine = currentLine
         }
 
 

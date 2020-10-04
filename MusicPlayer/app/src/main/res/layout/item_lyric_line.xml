@@ -9,7 +9,8 @@
     <TextView
         android:id="@+id/tvLyric"
         style="@style/LyricViewMini"
-        tools:text="This party's pretty boring"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        tools:text="This party's pretty boring" />
 </androidx.appcompat.widget.LinearLayoutCompat>

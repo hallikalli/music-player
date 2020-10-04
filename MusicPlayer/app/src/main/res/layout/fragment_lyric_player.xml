@@ -7,18 +7,18 @@
 
         <variable
             name="vm"
-            type="com.hklee.musicplayer.ui.viewmodel.MainViewModel" />
+            type="com.hklee.musicplayer.ui.viewmodel.RepoModel" />
 
         <variable
-            name="mc"
-            type="com.hklee.musicplayer.ui.player.PlayerController" />
+            name="player"
+            type="com.hklee.musicplayer.ui.viewmodel.PlayerViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/playerBackground"
-        tools:context=".ui.player.lyricplayer.LyricPlayerFragment">
+        tools:context=".ui.fragment.MusicPlayerFullLyricFragment">
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -26,18 +26,19 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="24dp"
             android:overScrollMode="never"
 
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+            app:layout_constraintVertical_bias="0.0"
             tools:itemCount="30"
             tools:listitem="@layout/item_lyric_line" />
 
@@ -74,8 +75,8 @@
                 style="@style/FloSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="@{mc.nowPlaying.second}"
-                android:progress="@{mc.nowPlaying.first}"
+                android:max="@{player.playingProgress.second}"
+                android:progress="@{player.playingProgress.first}"
                 android:scaleY="2"
                 tools:progress="30" />
 
@@ -84,18 +85,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/imageButton"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@null"
-                    android:onClick="@{() -> mc.isPlaying()? mc.pause(false):mc.start()}"
+                    android:onClick="@{() -> player.isPlaying()? player.pause(false):player.start()}"
                     android:scaleType="fitXY"
-                    app:play="@{mc.isPlaying}"
+                    app:play="@{player.isPlaying}"
                     app:srcCompat="@drawable/ic_play" />
 
                 <ImageButton
@@ -103,9 +102,9 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@null"
-                    android:onClick="@{() ->mc.stop()}"
+                    android:onClick="@{() ->player.stop()}"
                     android:scaleType="fitXY"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:srcCompat="@drawable/ic_stop" />
             </LinearLayout>
         </LinearLayout>
@@ -114,6 +113,7 @@
             android:id="@+id/btnExitLyricPlayer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -125,6 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -137,7 +138,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                tools:text="title"/>
+                tools:text="title" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -146,7 +147,7 @@
                 android:text="@{vm.currentSong.album}"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                tools:text="singer"/>
+                tools:text="singer" />
 
             <TextView
                 android:id="@+id/textView9"
@@ -155,7 +156,7 @@
                 android:text="@{vm.currentSong.singer}"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                tools:text="singer"/>
+                tools:text="singer" />
 
         </LinearLayout>
 

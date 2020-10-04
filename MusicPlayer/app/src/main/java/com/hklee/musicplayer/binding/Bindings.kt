@@ -1,4 +1,4 @@
-package com.droidknights.app2020.binding
+package com.hklee.musicplayer.binding
 
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -7,29 +7,18 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.hklee.musicplayer.R
 import com.hklee.musicplayer.util.Utils
-import java.text.SimpleDateFormat
 
 
 @BindingAdapter("imageUrl")
 fun ImageView.bindAlbumImage(imageUrl: String?) {
-
-    //todo: 라운드 코너
     Glide.with(this)
         .load(imageUrl)
         .centerCrop()
         .placeholder(R.color.darkGray)
-        .transform(RoundedCorners(20),CenterCrop())
         .into(this)
-
-
 }
-
-var simpleDateFormat = SimpleDateFormat("mm:ss")
 
 @BindingAdapter("time")
 fun TextView.bindTime(seconds: Int?) {

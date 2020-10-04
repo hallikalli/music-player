@@ -16,14 +16,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.ActionBar.Transparent">
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name=".ui.Activity.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainActivity"
+        <activity android:name=".ui.Activity.MainActivity"
             android:theme="@style/NoActionBarTheme"/>
     </application>
 
