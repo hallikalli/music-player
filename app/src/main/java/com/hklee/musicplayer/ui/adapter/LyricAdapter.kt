@@ -8,9 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.hklee.musicplayer.R
-
 
 
 data class Lyc(val time: Long, val line: String)
@@ -84,7 +85,6 @@ class LyricAdapter(
         this.closeListener = listener
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LyricHolder {
         var view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_lyric_line, parent, false)
@@ -146,18 +146,9 @@ class LyricAdapter(
             if (prevLine >= 0) notifyItemChanged(prevLine)
             //중앙고정이 설정되어있으면 자동 스크롤
             if (centerPos != -1 && centerPos < currentLine + 1) {
-
-
-                Handler().postDelayed(
-                    Runnable {
-                        recyclerView!!.smoothScrollToPosition(currentLine + 1 - centerPos)
-
-                    },
-                    200
-                )
-//                recyclerView?.scrollToPosition(centerPos)
-//                recyclerView?.invalidate()
-
+                recyclerView!!.scrollToPosition(currentLine + centerPos)
+            } else if (centerPos != -1 && centerPos > currentLine + 1) {
+                recyclerView!!.scrollToPosition(0)
             }
             prevLine = currentLine
         }

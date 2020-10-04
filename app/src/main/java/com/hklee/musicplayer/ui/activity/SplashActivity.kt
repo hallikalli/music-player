@@ -1,4 +1,4 @@
-package com.hklee.musicplayer.ui.Activity
+package com.hklee.musicplayer.ui.activity
 
 import android.content.Intent
 import android.os.Bundle

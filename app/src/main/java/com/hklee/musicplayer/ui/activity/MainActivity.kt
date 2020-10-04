@@ -1,4 +1,4 @@
-package com.hklee.musicplayer.ui.Activity
+package com.hklee.musicplayer.ui.activity
 
 import android.os.Bundle
 import androidx.activity.viewModels
