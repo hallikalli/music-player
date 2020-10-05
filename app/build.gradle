@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 android {
     compileSdkVersion 29
@@ -50,6 +51,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.1'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -57,17 +59,8 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
-
-    //Glide
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
-
-    // Retrofit2
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
-
-    // Json Parser
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
 
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
@@ -75,6 +68,9 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:$hilt_view_model_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
+    // NavigationComponent
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -85,15 +81,18 @@ dependencies {
     // Saved state module for ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
 
-    //Rx
+    //Glide https://github.com/bumptech/glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+
+    // Retrofit2 https://github.com/square/retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+    //Rx https://github.com/ReactiveX/RxJava , https://github.com/ReactiveX/RxAndroid
     implementation "io.reactivex.rxjava3:rxjava:$rx_java_version"
     implementation "io.reactivex.rxjava3:rxandroid:$rx_android_version"
 
-    // NavigationComponent
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-
     // SwitchIcon
     implementation 'com.github.zagum:Android-SwitchIcon:1.4.0'
-
 }

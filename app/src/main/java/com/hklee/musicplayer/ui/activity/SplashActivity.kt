@@ -13,10 +13,9 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        //지 2초간 스플래시 화면 유
+        //지 2초간 스플래시 유지
         Handler().postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
-            finish()
         }, SPLASH_DISPLAY_TIME);
     }
 }

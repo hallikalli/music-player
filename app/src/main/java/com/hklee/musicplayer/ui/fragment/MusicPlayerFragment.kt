@@ -1,9 +1,11 @@
 package com.hklee.musicplayer.ui.fragment
 
+import android.content.Intent
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.hklee.musicplayer.R
 import com.hklee.musicplayer.base.BaseFragment
 import com.hklee.musicplayer.databinding.FragmentMusicPlayerBinding
@@ -28,6 +30,7 @@ class MusicPlayerFragment :
 
         initPlyerBar()
         initLyricView()
+        initOpenSourceButton()
     }
 
     private fun initPlyerBar() {
@@ -52,6 +55,16 @@ class MusicPlayerFragment :
             val action =
                 MusicPlayerFragmentDirections.toLyricPlayerFragment()
             findNavController().navigate(action)
+        }
+    }
+
+
+    private fun initOpenSourceButton() {
+        btnOpenSource.setOnClickListener {
+            activity?.let {
+                val intent = Intent(it, OssLicensesMenuActivity::class.java)
+                it.startActivity(intent)
+            }
         }
     }
 }
