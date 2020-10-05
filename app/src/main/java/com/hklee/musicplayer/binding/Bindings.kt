@@ -7,15 +7,19 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.hklee.musicplayer.R
 import com.hklee.musicplayer.util.Utils
 
 
 @BindingAdapter("imageUrl")
 fun ImageView.bindAlbumImage(imageUrl: String?) {
+    val transformation = MultiTransformation(CenterCrop(), RoundedCorners(10))
     Glide.with(this)
         .load(imageUrl)
-        .centerCrop()
+        .transform(transformation)
         .placeholder(R.color.darkGray)
         .into(this)
 }
